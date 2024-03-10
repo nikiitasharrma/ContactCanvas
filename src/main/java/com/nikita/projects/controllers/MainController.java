@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.nikita.projects.UserRepository;
 import com.nikita.projects.entities.Contact;
@@ -38,6 +39,14 @@ public class MainController {
 		userRepo.save(user);
 		
 		return "Test Successful!";
+	}
+	
+	@GetMapping("/home")
+	public ModelAndView homeView() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("title","Smart Contact Manager");
+		mv.setViewName("home");
+		return mv;
 	}
 
 	public UserRepository getUserRepo() {
