@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::base-layout(~{::section})">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+</head>
+<body>
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 offset-md-2">
+					<div class="my-card mt-3">
+						<h3 class="text-center">Register here!</h3>
+						<form>
+							<div class="form-group">
+								<label for="name_field">Full Name</label> <input type="text"
+									class="form-control" id="name_field" name="name"
+									placeholder="Enter your name" required>
+							</div>
+							<div class="form-group">
+								<label for="email_field">Email</label> <input type="email"
+									class="form-control" id="email_field" name="email"
+									placeholder="Enter email address" required>
+							</div>
+							<div class="form-group">
+								<label for="password_field">Password</label> <input
+									type="password" class="form-control" id="password_field"
+									name="password" placeholder="Create a password" required>
+							</div>
+							<div class="form-group">
+								<textarea rows="10" class="form-control"
+									placeholder="Provide a description for yourelf"></textarea>
+							</div>
+							<div class="container text-center">
+								<button type="submit" class="btn bg-primary text-white">Submit</button>
+								<button type="reset" class="btn btn-warning">Reset</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

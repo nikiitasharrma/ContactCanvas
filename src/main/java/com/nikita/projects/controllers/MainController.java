@@ -28,6 +28,14 @@ public class MainController {
 		mv.setViewName("about");
 		return mv;
 	}
+	
+	@GetMapping("/signup")
+	public ModelAndView signupView() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("title","Register-Smart Contact Manager");
+		mv.setViewName("signup");
+		return mv;
+	}
 
 //	public UserRepository getUserRepo() {
 //		return userRepo;
