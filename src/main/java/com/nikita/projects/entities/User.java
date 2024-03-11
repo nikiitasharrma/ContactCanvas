@@ -11,36 +11,47 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "USERS")
 public class User {
-	
+
+	private static final String EMAIL_REGEXP = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+	private static final String PASSWORD_REGEXP = "^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!#$%&? \"]).*$";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="u_id")
+	@Column(name = "u_id")
 	private int id;
-	
+
 	@Column(name = "user_name")
+	@NotEmpty(message = "Name field cannot be left empty")
+	@Size(min = 2, max = 20, message = "Name must have characters ranging from 2 to 20")
 	private String name;
-	
+
 	@Column(name = "user_email", unique = true)
+	@Pattern(regexp = EMAIL_REGEXP, message = "Invalid email")
 	private String email;
-	
+
+	@Pattern(regexp = PASSWORD_REGEXP, message = "Password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
 	private String password;
-	
+
 	@Column(name = "u_desc", length = 500)
+	@NotEmpty(message = "Desciption must be provided")
 	private String description;
-	
+
 	private String role;
-	
+
 	private boolean enabled;
-	
+
 	private String imageUrl;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy= "user")
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Contact> contacts;
-	
+
 	public User() {
 		super();
 	}
@@ -136,6 +147,6 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", description="
 				+ description + ", role=" + role + ", enabled=" + enabled + ", imageUrl=" + imageUrl + ", contacts="
 				+ contacts + "]";
-	} 
-	
+	}
+
 }

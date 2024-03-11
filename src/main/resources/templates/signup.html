@@ -17,28 +17,43 @@
 							<p th:text="${session.message.content}"></p>
 							<th:block th:remove="all"></th:block>
 						</div>
-						<form th:action="@{/processSignup}" method="post"
+						<form novalidate="novalidate" th:action="@{/processSignup}" method="post"
 							th:object="${user}">
 							<div class="form-group">
 								<label for="name_field">Full Name</label> <input type="text"
-									class="form-control" id="name_field" name="name"
-									placeholder="Enter your name" th:value="${user.name}" required>
+									class="form-control "
+									th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+									id="name_field" name="name" placeholder="Enter your name"
+									th:value="${user.name}" required>
+								<div th:each="e : ${#fields.errors('name')}" th:text="${e}"
+									class="invalid-feedback"></div>
 							</div>
 							<div class="form-group">
 								<label for="email_field">Email</label> <input type="email"
-									class="form-control" id="email_field" name="email"
-									placeholder="Enter email address" th:value="${user.email}"
-									required>
+									class="form-control "
+									th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
+									id="email_field" name="email" placeholder="Enter email address"
+									th:value="${user.email}" required>
+								<div th:each="e : ${#fields.errors('email')}" th:text="${e}"
+									class="invalid-feedback"></div>
 							</div>
 							<div class="form-group">
 								<label for="password_field">Password</label> <input
-									type="password" class="form-control" id="password_field"
-									name="password" placeholder="Create a password" required>
+									type="password" class="form-control "
+									th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : ''}"
+									id="password_field" name="password"
+									placeholder="Create a password" required>
+								<div th:each="e : ${#fields.errors('password')}" th:text="${e}"
+									class="invalid-feedback"></div>
 							</div>
 							<div class="form-group">
-								<textarea rows="10" class="form-control"
+								<textarea rows="10" class="form-control "
+									th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"
 									placeholder="Provide a description for yourself"
+									name="description"
 									th:value="${user.description}" required></textarea>
+								<div th:each="e : ${#fields.errors('description')}" th:text="${e}"
+									class="invalid-feedback"></div>
 							</div>
 							<div class="form-check">
 								<input type="checkbox" class="form-check-input"

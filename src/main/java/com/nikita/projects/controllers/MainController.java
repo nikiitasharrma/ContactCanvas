@@ -3,6 +3,7 @@ package com.nikita.projects.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import com.nikita.projects.entities.User;
 import com.nikita.projects.helper.Message;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import com.nikita.projects.UserRepository;
 
@@ -41,13 +43,16 @@ public class MainController {
 	}
 
 	@PostMapping("/processSignup")
-	public String processSignup(@ModelAttribute("user") User user,
+	public String processSignup(@Valid @ModelAttribute("user") User user, BindingResult result,
 			@RequestParam(value = "agreement", defaultValue = "false") boolean agreement, Model m,
 			HttpSession session) {
 
 		try {
 			if (!agreement) {
 				throw new Exception("Please accept the terms and conditions to proceed with the registration");
+			}
+			if (result.hasErrors()) {
+				return "signup";
 			}
 			User resultUser = userRepo.save(user);
 			System.out.println(resultUser + " " + agreement);
