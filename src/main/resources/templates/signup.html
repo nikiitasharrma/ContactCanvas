@@ -12,16 +12,23 @@
 				<div class="col-md-8 offset-md-2">
 					<div class="my-card mt-3">
 						<h3 class="text-center">Register here!</h3>
-						<form>
+						<div th:if="${session.message}" class="alert "
+							th:classappend="${session.message.type}" role="alert">
+							<p th:text="${session.message.content}"></p>
+							<th:block th:remove="all"></th:block>
+						</div>
+						<form th:action="@{/processSignup}" method="post"
+							th:object="${user}">
 							<div class="form-group">
 								<label for="name_field">Full Name</label> <input type="text"
 									class="form-control" id="name_field" name="name"
-									placeholder="Enter your name" required>
+									placeholder="Enter your name" th:value="${user.name}" required>
 							</div>
 							<div class="form-group">
 								<label for="email_field">Email</label> <input type="email"
 									class="form-control" id="email_field" name="email"
-									placeholder="Enter email address" required>
+									placeholder="Enter email address" th:value="${user.email}"
+									required>
 							</div>
 							<div class="form-group">
 								<label for="password_field">Password</label> <input
@@ -30,7 +37,14 @@
 							</div>
 							<div class="form-group">
 								<textarea rows="10" class="form-control"
-									placeholder="Provide a description for yourelf"></textarea>
+									placeholder="Provide a description for yourself"
+									th:value="${user.description}" required></textarea>
+							</div>
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input"
+									id="exampleCheck1" name="agreement"> <label
+									class="form-check-label" for="exampleCheck1">Accept
+									terms and conditions</label>
 							</div>
 							<div class="container text-center">
 								<button type="submit" class="btn bg-primary text-white">Submit</button>
