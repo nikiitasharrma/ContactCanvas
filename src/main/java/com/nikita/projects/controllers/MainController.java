@@ -1,6 +1,10 @@
 package com.nikita.projects.controllers;
 
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.nikita.projects.entities.User;
 import com.nikita.projects.helper.Message;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 
 import com.nikita.projects.UserRepository;
 
 @Controller
 public class MainController {
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UserRepository userRepo;
@@ -54,6 +59,8 @@ public class MainController {
 			if (result.hasErrors()) {
 				return "signup";
 			}
+			user.setRole("ROLE_USER");
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			User resultUser = userRepo.save(user);
 			System.out.println(resultUser + " " + agreement);
 			session.setAttribute("message", new Message("Successfully registered!", "alert-success"));
@@ -71,5 +78,14 @@ public class MainController {
 	public void setUserRepo(UserRepository userRepo) {
 		this.userRepo = userRepo;
 	}
+
+	public BCryptPasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
+
+	public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
+	
 
 }
