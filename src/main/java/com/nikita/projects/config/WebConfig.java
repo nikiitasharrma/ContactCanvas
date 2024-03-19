@@ -42,7 +42,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests(requests -> requests.antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/user/**")
 				.hasRole("USER").antMatchers("/").permitAll()).csrf(csrf -> csrf.disable())
-				.formLogin(form -> form.loginPage("/login").permitAll());
+				.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/user/index").permitAll());
 	}
 
 }
