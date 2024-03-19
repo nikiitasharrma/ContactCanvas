@@ -13,23 +13,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    UserDetailsServiceImpl getUserService() {
+	@Bean
+	UserDetailsServiceImpl getUserService() {
 		return new UserDetailsServiceImpl();
 	}
 
-    @Bean
-    BCryptPasswordEncoder getPasswordEncoder() {
+	@Bean
+	BCryptPasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-    @Bean
-    DaoAuthenticationProvider daoAuthProvider() {
+	@Bean
+	DaoAuthenticationProvider daoAuthProvider() {
 		DaoAuthenticationProvider daoAuthProvider = new DaoAuthenticationProvider();
-		
+
 		daoAuthProvider.setUserDetailsService(getUserService());
 		daoAuthProvider.setPasswordEncoder(getPasswordEncoder());
-		
+
 		return daoAuthProvider;
 	}
 
@@ -40,10 +40,9 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests(requests -> requests.antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/").permitAll())
-                .csrf(csrf -> csrf.disable()).formLogin();       
+		http.authorizeRequests(requests -> requests.antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/user/**")
+				.hasRole("USER").antMatchers("/").permitAll()).csrf(csrf -> csrf.disable())
+				.formLogin(form -> form.loginPage("/login").permitAll());
 	}
-	
+
 }

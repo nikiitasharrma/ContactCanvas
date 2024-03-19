@@ -70,6 +70,12 @@ public class MainController {
 		}
 		return "signup";
 	}
+	
+	@GetMapping("/login")
+	public String loginPage(Model m) {
+		m.addAttribute("title", "Login-Smart Contact Manager");
+		return "login";
+	}
 
 	public UserRepository getUserRepo() {
 		return userRepo;
