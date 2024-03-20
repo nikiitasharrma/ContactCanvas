@@ -49,7 +49,7 @@ public class MainController {
 
 	@PostMapping("/processSignup")
 	public String processSignup(@Valid @ModelAttribute("user") User user, BindingResult result,
-			@RequestParam(value = "agreement", defaultValue = "false") boolean agreement, Model m,
+			@RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
 			HttpSession session) {
 
 		try {

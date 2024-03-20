@@ -31,7 +31,7 @@ public class Contact {
 	@Column (name = "c_dec", length = 500)
 	private String description;
 	
-	private String imageUrl;
+	private String img;
 	
 	@ManyToOne
 	private User user;
@@ -41,7 +41,7 @@ public class Contact {
 	}
 
 	public Contact(int cId, String name, String nickname, String work, String email, String contactNo,
-			String description, String imageUrl, User user) {
+			String description, String img, User user) {
 		super();
 		this.cId = cId;
 		this.name = name;
@@ -50,7 +50,7 @@ public class Contact {
 		this.email = email;
 		this.contactNo = contactNo;
 		this.description = description;
-		this.imageUrl = imageUrl;
+		this.img = img;
 		this.user = user;
 	}
 
@@ -110,12 +110,12 @@ public class Contact {
 		this.description = description;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
+	public String getimg() {
+		return img;
 	}
 
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	public void setimg(String img) {
+		this.img = img;
 	}
 
 	public User getUser() {
@@ -129,7 +129,7 @@ public class Contact {
 	@Override
 	public String toString() {
 		return "Contact [cId=" + cId + ", name=" + name + ", nickname=" + nickname + ", work=" + work + ", email="
-				+ email + ", contactNo=" + contactNo + ", description=" + description + ", imageUrl=" + imageUrl
+				+ email + ", contactNo=" + contactNo + ", description=" + description + ", img=" + img
 				+ ", user=" + user + "]";
 	}
 	
