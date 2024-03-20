@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nikita.projects.ContactRepository;
 import com.nikita.projects.UserRepository;
 import com.nikita.projects.entities.Contact;
 import com.nikita.projects.entities.User;
@@ -31,6 +33,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private ContactRepository contactRepo;
 
 	@ModelAttribute
 	public void commomData(Model m, Principal principal) {
@@ -85,6 +90,18 @@ public class UserController {
 
 		return "normal/add_contactform";
 	}
+	
+	@GetMapping("/all-contacts")
+	public String showAllContacts(Model m, Principal principal) {
+		m.addAttribute("title", "Your contacts-SmartContactManager");
+		
+		User user = userRepo.getUserByUsername(principal.getName());
+		List<Contact> contacts = contactRepo.getContactsByUser(user.getId());
+		
+		m.addAttribute("contacts", contacts);
+		
+		return "normal/your_contacts";
+	}
 
 	public UserRepository getUserRepo() {
 		return userRepo;
@@ -92,6 +109,14 @@ public class UserController {
 
 	public void setUserRepo(UserRepository userRepo) {
 		this.userRepo = userRepo;
+	}
+
+	public ContactRepository getContactRepo() {
+		return contactRepo;
+	}
+
+	public void setContactRepo(ContactRepository contactRepo) {
+		this.contactRepo = contactRepo;
 	}
 
 }
