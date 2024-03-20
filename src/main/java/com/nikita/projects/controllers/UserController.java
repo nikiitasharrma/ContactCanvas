@@ -2,11 +2,11 @@ package com.nikita.projects.controllers;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nikita.projects.UserRepository;
 import com.nikita.projects.entities.Contact;
 import com.nikita.projects.entities.User;
+import com.nikita.projects.helper.Message;
 
 @Controller
 @RequestMapping("/user")
@@ -58,7 +59,7 @@ public class UserController {
 
 	@PostMapping("/processContact")
 	public String addConpage(@Valid @ModelAttribute("contact") Contact contact, @RequestParam("img") MultipartFile file,
-			Principal principal) {
+			Principal principal, HttpSession session) {
 		try {
 			User user = userRepo.getUserByUsername(principal.getName());
 			contact.setUser(user);
@@ -73,8 +74,13 @@ public class UserController {
 
 			user.getContacts().add(contact);
 			userRepo.save(user);
+			
+			session.setAttribute("message", new Message("Contact successfully added to list", "alert-success"));
+			
 		} catch (Exception e) {
+			System.out.println("ERROR " + e.getMessage());
 			e.printStackTrace();
+			session.setAttribute("message", new Message("Something went wrong!", "alert-danger"));
 		}
 
 		return "normal/add_contactform";

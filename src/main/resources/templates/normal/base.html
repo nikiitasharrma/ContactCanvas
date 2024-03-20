@@ -39,25 +39,38 @@
 	</nav>
 	<!-- Sidebar -->
 	<div class="sidebar mt-3">
-	    <span onclick="toggleSidebar()" class="crossBtn">&times;</span>
-		<a th:href="@{/user/index}" class="item"><i class="fa-solid fa-house"></i>  Home</a> 
-		<a href="" class="item"><i class="fa-solid fa-address-book"></i>  View Contacts</a> 
-		<a th:href="@{/user/addContact}" class="item"><i class="fa-solid fa-pen-to-square"></i>  Add Contact</a> 
-		<a href="" class="item"><i class="fa-solid fa-user"></i>  Your Profile</a> 
-		<a href="" class="item"><i class="fa-solid fa-gear"></i>  Settings</a>
-		<a th:href="@{/logout}" class="item"><i class="fa-solid fa-right-from-bracket"></i>  Logout</a>
+		<span onclick="toggleSidebar()" class="crossBtn">&times;</span> <a
+			th:href="@{/user/index}" class="item"><i
+			class="fa-solid fa-house"></i> Home</a> <a href="" class="item"><i
+			class="fa-solid fa-address-book"></i> View Contacts</a> <a
+			th:href="@{/user/addContact}" class="item"><i
+			class="fa-solid fa-pen-to-square"></i> Add Contact</a> <a href=""
+			class="item"><i class="fa-solid fa-user"></i> Your Profile</a> <a
+			href="" class="item"><i class="fa-solid fa-gear"></i> Settings</a> <a
+			th:href="@{/logout}" class="item"><i
+			class="fa-solid fa-right-from-bracket"></i> Logout</a>
 		<div class="divider"></div>
 
 	</div>
 
 	<!-- Content -->
 	<div class="content mt-5">
-	    <div class="btn" style="background-color: #FAEBD7" onclick="toggleSidebar()">
-	       <i class="fas fa-bars m-3"></i>
-	    </div>
+		<div class="btn" style="background-color: #FAEBD7"
+			onclick="toggleSidebar()">
+			<i class="fas fa-bars m-3"></i>
+		</div>
+
+		<!-- Message box -->
+		<div class="container" th:if="${session.message}">
+			<div class="alert text-center "
+				th:classappend="${session.message.type}" role="alert"
+				th:text="${session.message.content}"></div>
+		</div>
+		<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+
 		<div th:replace="${content}"></div>
 	</div>
-	
+
 	<script th:src="@{/js/script.js}"></script>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
