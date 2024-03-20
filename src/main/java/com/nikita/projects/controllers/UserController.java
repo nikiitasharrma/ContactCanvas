@@ -49,6 +49,12 @@ public class UserController {
 		return "normal/add_contactform";
 	}
 	
+	@PostMapping("/processContact")
+	public String addConpage(@ModelAttribute("contact") Contact contact) {
+		System.out.println(contact);
+		
+		return "normal/add_contactform";
+	}
 
 	public UserRepository getUserRepo() {
 		return userRepo;

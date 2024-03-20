@@ -13,9 +13,8 @@
 				<div class="container-fluid mt-1">
 					<div class="row">
 						<div class="col-md-10 offset-md-1">
-							<form th:object="${contact}" method="post"
-								enctype="multipart/form-data" th:action="@{/processContact}"
-								class="mt-2">
+							<form th:object="${contact}" method="post" enctype="multipart/form-data"
+								th:action="@{/user/processContact}" class="mt-2">
 								<!-- Name field -->
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -23,7 +22,7 @@
 											<i class="fa fa-plus"></i>
 										</div>
 									</div>
-									<input type="text" id="name" name="name"
+									<input type="text" id="contactname" name="name"
 										placeholder="Enter contact name" class="form-control" />
 								</div>
 								<!--  NickName field -->
@@ -33,7 +32,7 @@
 											<i class="fa fa-user-alt"></i>
 										</div>
 									</div>
-									<input type="text" id="nickName" name="nickname"
+									<input type="text" id="nickname" name="nickname"
 										placeholder="Enter contact nickname" class="form-control" />
 								</div>
 								<!--  Contact number field -->
@@ -43,7 +42,7 @@
 											<i class="fa fa-phone-alt"></i>
 										</div>
 									</div>
-									<input type="text" id="contactNo" name="contactNo"
+									<input type="number" id="phone" name="contactNo"
 										placeholder="Enter contact number" class="form-control" />
 								</div>
 								<!--  Email field -->
@@ -64,15 +63,16 @@
 										</div>
 									</div>
 									<input type="text" id="work" name="work"
-										placeholder="Enter contact work" class="form-control" />
+										placeholder="Enter contact work details" class="form-control" />
 								</div>
 								<!--  Description field -->
 								<div class="form-group mt-3">
 									<textarea name="description" id="description"
 										placeholder="Enter contact description" class="form-control"
-										rows="10" cols="10"></textarea>
+										rows="10"></textarea>
 								</div>
-								<!-- Image field -->
+
+								<!-- image field -->
 								<div class="custom-file">
 									<input type="file" name="img">
 								</div>
