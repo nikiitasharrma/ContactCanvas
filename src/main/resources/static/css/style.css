@@ -81,3 +81,11 @@ body {
 .content {
 	margin-left: 20%
 }
+
+/* Contact image */
+.contact-profile{
+	width: 35px;
+	height: 35px;
+	object-fit: cover;
+	border-radius: 50%;
+}

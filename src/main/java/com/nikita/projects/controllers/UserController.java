@@ -66,7 +66,7 @@ public class UserController {
 	}
 
 	@PostMapping("/processContact")
-	public String addConpage(@Valid @ModelAttribute("contact") Contact contact, @RequestParam("img") MultipartFile file,
+	public String addContactpage(@Valid @ModelAttribute("contact") Contact contact, @RequestParam("img") MultipartFile file,
 			Principal principal, HttpSession session) {
 		try {
 			User user = userRepo.getUserByUsername(principal.getName());
@@ -78,6 +78,8 @@ public class UserController {
 				String uploadDir = new ClassPathResource("static/img").getFile().getAbsolutePath();
 				Files.copy(file.getInputStream(), Paths.get(uploadDir + File.separator + file.getOriginalFilename()),
 						StandardCopyOption.REPLACE_EXISTING);
+			}else {
+				contact.setImgUrl("contact.png");
 			}
 
 			user.getContacts().add(contact);
@@ -109,6 +111,14 @@ public class UserController {
 		
 		return "normal/your_contacts";
 	}
+	
+	@GetMapping("/{cId}/contact")
+	public String showContactDetails(@PathVariable("cId") Integer id, Model m) {
+		Contact contact = contactRepo.findById(id).get();
+		m.addAttribute("contact", contact);
+		return "normal/specific-contact";
+	}
+	
 
 	public UserRepository getUserRepo() {
 		return userRepo;
