@@ -5,17 +5,20 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -91,14 +94,18 @@ public class UserController {
 		return "normal/add_contactform";
 	}
 	
-	@GetMapping("/all-contacts")
-	public String showAllContacts(Model m, Principal principal) {
+	@GetMapping("/all-contacts/{page}")
+	public String showAllContacts(Model m, Principal principal, @PathVariable("page") int page) {
 		m.addAttribute("title", "Your contacts-SmartContactManager");
 		
+		Pageable pageable = PageRequest.of(page, 5);
+		
 		User user = userRepo.getUserByUsername(principal.getName());
-		List<Contact> contacts = contactRepo.getContactsByUser(user.getId());
+		Page<Contact> contacts = contactRepo.getContactsByUser(user.getId(), pageable);
 		
 		m.addAttribute("contacts", contacts);
+		m.addAttribute("currentPage", page);
+		m.addAttribute("totalPages", contacts.getTotalPages());
 		
 		return "normal/your_contacts";
 	}
