@@ -1,6 +1,7 @@
 package com.nikita.projects.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -129,6 +130,28 @@ public class UserController {
 		
 		return "normal/specific-contact";
 	}
+	
+	@GetMapping("/delete/{cId}")
+	public String deleteContact(@PathVariable("cId") Integer id, Principal principal, HttpSession session) throws IOException {
+		
+		User user = userRepo.getUserByUsername(principal.getName());
+		
+		Contact contact = contactRepo.findById(id).get();
+		
+		if(user.getId() == contact.getUser().getId()) {
+			
+			//deleting image from saved path
+			String uploadDir = new ClassPathResource("/static/img").getFile().getAbsolutePath();
+			Files.deleteIfExists(Paths.get(uploadDir + File.separator + contact.getImgUrl()));
+			
+			contactRepo.deleteById(id);
+			session.setAttribute("message", new Message("Contact deleted successfully", "btn-success"));
+		}
+		
+		return "redirect:/user/all-contacts/0";
+	}
+	
+	
 	
 
 	public UserRepository getUserRepo() {

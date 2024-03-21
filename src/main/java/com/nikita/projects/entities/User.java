@@ -49,7 +49,7 @@ public class User {
 
 	private String imageUrl;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Contact> contacts;
 
 	public User() {
