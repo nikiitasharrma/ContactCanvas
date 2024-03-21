@@ -8,7 +8,7 @@
 <body>
 	<section>
 		<div class="card mr-3 ml-5">
-			<div class="card-body">
+			<div class="card-body" th:if="${contact}">
 				<div class="container text-center">
 					<img class="contact-profile-picture"
 						style="height: 200px; width: 200px"
@@ -48,6 +48,13 @@
 						<button class="btn btn-dark btn-sm btn-block">Update</button>
 						<button class="btn btn-danger btn-sm btn-block">Delete</button>
 					</div>
+				</div>
+			</div>
+			<div th:unless="${contact}" class="text-center">
+				<h1>404 ERROR</h1>
+				<div>
+					<h2>Contact not found!</h2>
+					<a th:href="@{/user/addContact}">Create a new contact</a>
 				</div>
 			</div>
 		</div>

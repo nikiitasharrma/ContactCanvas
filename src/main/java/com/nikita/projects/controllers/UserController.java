@@ -113,9 +113,20 @@ public class UserController {
 	}
 	
 	@GetMapping("/{cId}/contact")
-	public String showContactDetails(@PathVariable("cId") Integer id, Model m) {
+	public String showContactDetails(@PathVariable("cId") Integer id, Model m, Principal principal) {
+		
+		User user = userRepo.getUserByUsername(principal.getName());
+		
 		Contact contact = contactRepo.findById(id).get();
-		m.addAttribute("contact", contact);
+		
+		//verifying that the contact is associated with the logged in user
+		if(user.getId() == contact.getUser().getId()) {
+			m.addAttribute("contact", contact);
+			m.addAttribute("title", contact.getName() + "-SmartContact5Manager");
+		}else {
+			m.addAttribute("title", "NotFound-SmartContactManager");
+		}
+		
 		return "normal/specific-contact";
 	}
 	
