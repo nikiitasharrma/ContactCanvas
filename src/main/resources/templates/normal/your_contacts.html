@@ -30,10 +30,10 @@
 							<td><a th:href="@{'/user/' + ${c.cId} + '/contact'}"><span
 									th:text="${c.email}"></span></a></td>
 							<td th:text="${c.contactNo}"></td>
-							<td>
-								<button class="btn btn-dark">Update</button>
-								<button th:onclick="|deleteContact(${c.cId})|" class="btn btn-danger">Delete</button>
-							</td>
+							<td><a th:href="@{'/user/update-contact/' + ${c.cId}}"><button
+										class="btn btn-dark">Update</button></a>
+								<button th:onclick="|deleteContact(${c.cId})|"
+									class="btn btn-danger">Delete</button></td>
 						</tr>
 					</tbody>
 				</table>

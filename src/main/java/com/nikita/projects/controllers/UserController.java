@@ -35,11 +35,17 @@ import com.nikita.projects.helper.Message;
 @RequestMapping("/user")
 public class UserController {
 
+	private String UPLOAD_DIR = new ClassPathResource("static/img").getFile().getAbsolutePath();
+
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
 	private ContactRepository contactRepo;
+
+	public UserController() throws IOException {
+
+	}
 
 	@ModelAttribute
 	public void commomData(Model m, Principal principal) {
@@ -67,27 +73,27 @@ public class UserController {
 	}
 
 	@PostMapping("/processContact")
-	public String addContactpage(@Valid @ModelAttribute("contact") Contact contact, @RequestParam("img") MultipartFile file,
-			Principal principal, HttpSession session) {
+	public String addContactpage(@Valid @ModelAttribute("contact") Contact contact,
+			@RequestParam("img") MultipartFile file, Principal principal, HttpSession session) {
 		try {
 			User user = userRepo.getUserByUsername(principal.getName());
 			contact.setUser(user);
+			contactRepo.save(contact);
 
 			// processing image
 			if (!file.isEmpty()) {
 				contact.setImgUrl(file.getOriginalFilename());
-				String uploadDir = new ClassPathResource("static/img").getFile().getAbsolutePath();
-				Files.copy(file.getInputStream(), Paths.get(uploadDir + File.separator + file.getOriginalFilename()),
+				Files.copy(file.getInputStream(), Paths.get(UPLOAD_DIR + File.separator + file.getOriginalFilename()),
 						StandardCopyOption.REPLACE_EXISTING);
-			}else {
+			} else {
 				contact.setImgUrl("contact.png");
 			}
 
 			user.getContacts().add(contact);
 			userRepo.save(user);
-			
+
 			session.setAttribute("message", new Message("Contact successfully added to list", "alert-success"));
-			
+
 		} catch (Exception e) {
 			System.out.println("ERROR " + e.getMessage());
 			e.printStackTrace();
@@ -96,63 +102,101 @@ public class UserController {
 
 		return "normal/add_contactform";
 	}
-	
+
 	@GetMapping("/all-contacts/{page}")
 	public String showAllContacts(Model m, Principal principal, @PathVariable("page") int page) {
 		m.addAttribute("title", "Your contacts-SmartContactManager");
-		
+
 		Pageable pageable = PageRequest.of(page, 5);
-		
+
 		User user = userRepo.getUserByUsername(principal.getName());
 		Page<Contact> contacts = contactRepo.getContactsByUser(user.getId(), pageable);
-		
+
 		m.addAttribute("contacts", contacts);
 		m.addAttribute("currentPage", page);
 		m.addAttribute("totalPages", contacts.getTotalPages());
-		
+
 		return "normal/your_contacts";
 	}
-	
+
 	@GetMapping("/{cId}/contact")
 	public String showContactDetails(@PathVariable("cId") Integer id, Model m, Principal principal) {
-		
+
 		User user = userRepo.getUserByUsername(principal.getName());
-		
+
 		Contact contact = contactRepo.findById(id).get();
-		
-		//verifying that the contact is associated with the logged in user
-		if(user.getId() == contact.getUser().getId()) {
+
+		// verifying that the contact is associated with the logged in user
+		if (user.getId() == contact.getUser().getId()) {
 			m.addAttribute("contact", contact);
 			m.addAttribute("title", contact.getName() + "-SmartContact5Manager");
-		}else {
+		} else {
 			m.addAttribute("title", "NotFound-SmartContactManager");
 		}
-		
+
 		return "normal/specific-contact";
 	}
-	
+
 	@GetMapping("/delete/{cId}")
-	public String deleteContact(@PathVariable("cId") Integer id, Principal principal, HttpSession session) throws IOException {
-		
+	public String deleteContact(@PathVariable("cId") Integer id, Principal principal, HttpSession session)
+			throws IOException {
+
 		User user = userRepo.getUserByUsername(principal.getName());
-		
+
 		Contact contact = contactRepo.findById(id).get();
-		
-		if(user.getId() == contact.getUser().getId()) {
-			
-			//deleting image from saved path
-			String uploadDir = new ClassPathResource("/static/img").getFile().getAbsolutePath();
-			Files.deleteIfExists(Paths.get(uploadDir + File.separator + contact.getImgUrl()));
-			
+
+		if (user.getId() == contact.getUser().getId()) {
+
+			// deleting image from saved path
+			Files.deleteIfExists(Paths.get(UPLOAD_DIR + File.separator + contact.getImgUrl()));
+
 			contactRepo.deleteById(id);
-			session.setAttribute("message", new Message("Contact deleted successfully", "btn-success"));
 		}
-		
+
 		return "redirect:/user/all-contacts/0";
 	}
-	
-	
-	
+
+	@GetMapping("/update-contact/{cId}")
+	public String updateContact(@PathVariable("cId") Integer id, Model m, Principal principal) {
+
+		User user = userRepo.getUserByUsername(principal.getName());
+		Contact contact = contactRepo.findById(id).get();
+
+		if (user.getId() == contact.getUser().getId()) {
+			m.addAttribute("title", "Update Contact- SmartContactManager");
+			m.addAttribute("contact", contact);
+		}
+
+		return "normal/update_form";
+	}
+
+	@PostMapping("/process-updated-contact")
+	public String processUpdatedContact(@Valid @ModelAttribute("contact") Contact contact, Principal principal,
+			@RequestParam("img") MultipartFile file, Model m, HttpSession session) throws IOException {
+
+		User user = userRepo.getUserByUsername(principal.getName());
+
+		try {
+
+			if (file != null) {
+				Files.deleteIfExists(Paths.get(UPLOAD_DIR + File.separator + contact.getImgUrl()));
+				contact.setImgUrl(file.getOriginalFilename());
+				Files.copy(file.getInputStream(), Paths.get(UPLOAD_DIR + File.separator + file.getOriginalFilename()),
+						StandardCopyOption.REPLACE_EXISTING);
+			}
+
+			contact.setUser(user);
+			contactRepo.save(contact);
+			m.addAttribute("contact", contact);
+			session.setAttribute("message", new Message("Contact successfully updated", "alert-success"));
+		} catch (Exception e) {
+			System.out.println("ERROR" + e.getMessage());
+			e.printStackTrace();
+			session.setAttribute("message", new Message("Contact successfully updated", "alert-success"));
+		}
+
+		return "normal/update_form";
+	}
 
 	public UserRepository getUserRepo() {
 		return userRepo;

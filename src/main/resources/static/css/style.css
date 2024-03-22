@@ -31,14 +31,14 @@ body {
 @media only screen and (max-width: 600px) {
 	.sidebar {
 		display: none;
-		width: 80%!important;
+		width: 80% !important;
 		background: white;
 		height: 100vh;
 		position: fixed;
 		padding-top: 20px;
 	}
-	.content{
-	margin-left: 0%!important;
+	.content {
+		margin-left: 0% !important;
 	}
 }
 
@@ -70,12 +70,12 @@ body {
 	margin-top: 10px;
 }
 
-.sidebar .crossBtn{
+.sidebar .crossBtn {
 	position: absolute;
 	top: 0;
 	right: 20px;
 	font-size: 36px;
-	cursor:pointer
+	cursor: pointer
 }
 
 .content {
@@ -83,7 +83,7 @@ body {
 }
 
 /* Contact image */
-.contact-profile{
+.contact-profile {
 	width: 35px;
 	height: 35px;
 	object-fit: cover;
