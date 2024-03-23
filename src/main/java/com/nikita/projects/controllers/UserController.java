@@ -61,13 +61,13 @@ public class UserController {
 
 	@GetMapping("/index")
 	public String dashboard(Model m) {
-		m.addAttribute("title", "DashBoard-SmartContactManager");
+		m.addAttribute("title", "DashBoard - SmartContactManager");
 		return "normal/user_dash";
 	}
 
 	@GetMapping("/addContact")
 	public String addConpage(Model m) {
-		m.addAttribute("title", "Add Contact-SmartContactManager");
+		m.addAttribute("title", "Add Contact - SmartContactManager");
 		m.addAttribute("contact", new Contact());
 		return "normal/add_contactform";
 	}
@@ -105,7 +105,7 @@ public class UserController {
 
 	@GetMapping("/all-contacts/{page}")
 	public String showAllContacts(Model m, Principal principal, @PathVariable("page") int page) {
-		m.addAttribute("title", "Your contacts-SmartContactManager");
+		m.addAttribute("title", "Your contacts - SmartContactManager");
 
 		Pageable pageable = PageRequest.of(page, 5);
 
@@ -131,7 +131,7 @@ public class UserController {
 			m.addAttribute("contact", contact);
 			m.addAttribute("title", contact.getName() + "-SmartContact5Manager");
 		} else {
-			m.addAttribute("title", "NotFound-SmartContactManager");
+			m.addAttribute("title", "NotFound - SmartContactManager");
 		}
 
 		return "normal/specific-contact";
@@ -163,7 +163,7 @@ public class UserController {
 		Contact contact = contactRepo.findById(id).get();
 
 		if (user.getId() == contact.getUser().getId()) {
-			m.addAttribute("title", "Update Contact- SmartContactManager");
+			m.addAttribute("title", "Update Contact - SmartContactManager");
 			m.addAttribute("contact", contact);
 		}
 
@@ -196,6 +196,12 @@ public class UserController {
 		}
 
 		return "normal/update_form";
+	}
+	
+	@GetMapping("/your-profile")
+	public String showProfile(Model m) {
+		m.addAttribute("title", "Your Profile - SmartContactManager");
+		return "normal/your_profile";
 	}
 
 	public UserRepository getUserRepo() {

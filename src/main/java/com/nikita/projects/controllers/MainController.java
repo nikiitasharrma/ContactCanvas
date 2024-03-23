@@ -60,6 +60,7 @@ public class MainController {
 				return "signup";
 			}
 			user.setRole("ROLE_USER");
+			user.setEnabled(true);
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			User resultUser = userRepo.save(user);
 			System.out.println(resultUser + " " + agreement);
