@@ -10,6 +10,16 @@
 		<div class="card mr-3 ml-5">
 			<div class="card-body">
 				<h1 class="text-center">Your contacts</h1>
+
+				<!--  Search functionality  -->
+				<div class="search-container my-4">
+					<input type="text" class="form-control" onkeyup="search()"
+						placeholder="Search your contacts" id="search-input" />
+					<div class="search-result">
+						<p><b>This is a search result</b></p>
+					</div>
+				</div>
+
 				<table class="table">
 					<thead>
 						<tr>

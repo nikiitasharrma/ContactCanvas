@@ -12,6 +12,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "CONTACTS")
 public class Contact {
@@ -44,6 +46,7 @@ public class Contact {
 	private String imgUrl;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private User user;
 	
 	public Contact() {
