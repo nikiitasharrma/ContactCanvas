@@ -15,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,9 @@ public class UserController {
 
 	@Autowired
 	private ContactRepository contactRepo;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public UserController() throws IOException {
 
@@ -202,6 +206,29 @@ public class UserController {
 	public String showProfile(Model m) {
 		m.addAttribute("title", "Your Profile - SmartContactManager");
 		return "normal/your_profile";
+	}
+	
+	@GetMapping("/settings")
+	public String openSettings(Model m) {
+		m.addAttribute("title", "Settings - SmartContactManager");
+		return "normal/settings";
+	}
+	
+	@PostMapping("/change-password")
+	public String processChangePassword(Principal principal, @RequestParam("old-password") String oldPassword, @RequestParam("new-password") String newPassword, HttpSession session) {
+		
+		User user = userRepo.getUserByUsername(principal.getName());
+		
+		if(passwordEncoder.matches(oldPassword, user.getPassword())) {
+			user.setPassword(passwordEncoder.encode(newPassword));
+			userRepo.save(user);
+			session.setAttribute("message", new Message("Your password has been successfully changed", "btn-success"));
+			return "redirect:/user/index";
+		}else {
+			session.setAttribute("message", new Message("Current password is incorrect", "btn-danger"));
+			return "normal/settings";
+		}
+		
 	}
 
 	public UserRepository getUserRepo() {
