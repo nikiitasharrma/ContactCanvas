@@ -16,37 +16,40 @@
 					<input type="text" class="form-control" onkeyup="search()"
 						placeholder="Search your contacts" id="search-input" />
 					<div class="search-result">
-						<p><b>This is a search result</b></p>
+						<p>
+							<b>This is a search result</b>
+						</p>
 					</div>
 				</div>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Id</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Phone</th>
+								<th scope="col">Action</th>
 
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">Id</th>
-							<th scope="col">Name</th>
-							<th scope="col">Email</th>
-							<th scope="col">Phone</th>
-							<th scope="col">Action</th>
-
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="c : ${contacts}">
-							<th scope="row" th:text="${'SCM2024' + c.cId}"></th>
-							<td><img class="contact-profile"
-								th:src="@{'/img/' + ${c.imgUrl}}" alt="contact photo" /> <span
-								th:text="${c.name}"></span></td>
-							<td><a th:href="@{'/user/' + ${c.cId} + '/contact'}"><span
-									th:text="${c.email}"></span></a></td>
-							<td th:text="${c.contactNo}"></td>
-							<td><a th:href="@{'/user/update-contact/' + ${c.cId}}"><button
-										class="btn btn-dark">Update</button></a>
-								<button th:onclick="|deleteContact(${c.cId})|"
-									class="btn btn-danger">Delete</button></td>
-						</tr>
-					</tbody>
-				</table>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="c : ${contacts}">
+								<th scope="row" th:text="${'SCM2024' + c.cId}"></th>
+								<td><img class="contact-profile"
+									th:src="@{'/img/' + ${c.imgUrl}}" alt="contact photo" /> <span
+									th:text="${c.name}"></span></td>
+								<td><a th:href="@{'/user/' + ${c.cId} + '/contact'}"><span
+										th:text="${c.email}"></span></a></td>
+								<td th:text="${c.contactNo}"></td>
+								<td><a th:href="@{'/user/update-contact/' + ${c.cId}}"><button
+											class="btn btn-dark">Update</button></a>
+									<button th:onclick="|deleteContact(${c.cId})|"
+										class="btn btn-danger">Delete</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
 				<!-- Pagination -->
 				<nav aria-label="Page navigation example">
@@ -73,6 +76,12 @@
 				</nav>
 			</div>
 		</div>
+		<script>
+		$(document).ready(() => {
+			$(".item").removeClass("active");
+			$("#contacts-link").addClass("active");
+		})	
+		</script>
 	</section>
 </body>
 </html>
