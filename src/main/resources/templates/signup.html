@@ -54,6 +54,10 @@
 								<div th:each="e : ${#fields.errors('description')}"
 									th:text="${e}" class="invalid-feedback"></div>
 							</div>
+							<!-- image field -->
+							<div class="custom-file">
+								<input type="file" name="img">
+							</div>
 							<div class="form-check">
 								<input type="checkbox" class="form-check-input"
 									id="exampleCheck1" name="agreement"> <label

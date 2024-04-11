@@ -10,42 +10,56 @@
 		<div class="container" th:object="${user}">
 			<div class="card">
 				<div class="card-body text-center">
-					<img class="contact-profile-picture"
-						style="height: 200px; width: 200px"
-						th:src="@{/img/contact.png}" alt="profile-photo" />
-					<h1 class="text-center" th:text="${user.name}"></h1>
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">USERId</th>
-								<th scope="col">SCM2024<span th:text="${user.id}"></span></th>
+					<form th:object="${contact}" method="post"
+						enctype="multipart/form-data"
+						th:action="@{/user/change-user-image}" class="mt-2">
+						<div class="container text-center">
+							<img
+								style="height: 200px; width: 200px"
+								th:src="@{'/img/' + ${user.imageUrl}}" alt="profile-photo"
+								class="contact-profile img-fluid" />
+						</div>
+						<div class="custom-file text-center mt-3">
+							<span>Change picture</span> <input type="file" name="img">
+						</div>
+						<h1 class="text-center" th:text="${user.name}"></h1>
 
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">Name</th>
-								<td><span th:text="${user.name}"></span></td>
-							</tr>
-							<tr>
-								<th scope="row">Email</th>
-								<td><span th:text="${user.email}"></span></td>
-							</tr>
-							<tr>
-								<th scope="row">Role</th>
-								<td><span th:text="${user.role}"></span></td>
-							</tr>
-							<tr>
-								<th scope="row">Account active</th>
-								<td><span th:text="${user.enabled}"></span></td>
-							</tr>
-							<tr>
-								<th scope="row">About you</th>
-								<td><span th:text="${user.description}"></span></td>
-							</tr>
-						</tbody>
-					</table>
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">USERId</th>
+									<th scope="col">SCM2024<span th:text="${user.id}"></span></th>
 
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">Name</th>
+									<td><span th:text="${user.name}"></span></td>
+								</tr>
+								<tr>
+									<th scope="row">Email</th>
+									<td><span th:text="${user.email}"></span></td>
+								</tr>
+								<tr>
+									<th scope="row">Role</th>
+									<td><span th:text="${user.role}"></span></td>
+								</tr>
+								<tr>
+									<th scope="row">Account active</th>
+									<td><span th:text="${user.enabled}"></span></td>
+								</tr>
+								<tr>
+									<th scope="row">About you</th>
+									<td><span th:text="${user.description}"></span></td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="container text-center">
+							<button class="btn btn-outline-primary">Update profile
+								info</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

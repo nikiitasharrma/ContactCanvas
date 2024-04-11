@@ -17,7 +17,7 @@ const search = () => {
 	}else{
 		
 		//sending request to server
-		let url = `http://localhost:8080/SmartContactManager/search/${query}`;
+		let url = `http://localhost:8080/ContactCanvas/search/${query}`;
 		
 		fetch(url).then(response => {
 			return response.json();
@@ -26,7 +26,7 @@ const search = () => {
 			let text = `<div class='list-group'>`
 			
 			data.forEach((contact) => {
-				text += `<a href='/SmartContactManager/user/${contact.cId}/contact' class='list-group-item list-group-action'> ${contact.name} </a>` 
+				text += `<a href='/ContactCanvas/user/${contact.cId}/contact' class='list-group-item list-group-action'> ${contact.name} </a>` 
 			})
 			
 			text += `</div>`

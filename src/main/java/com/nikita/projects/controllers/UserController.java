@@ -65,13 +65,13 @@ public class UserController {
 
 	@GetMapping("/index")
 	public String dashboard(Model m) {
-		m.addAttribute("title", "DashBoard - SmartContactManager");
+		m.addAttribute("title", "DashBoard - ContactCanvas");
 		return "normal/user_dash";
 	}
 
 	@GetMapping("/addContact")
 	public String addConpage(Model m) {
-		m.addAttribute("title", "Add Contact - SmartContactManager");
+		m.addAttribute("title", "Add Contact - ContactCanvas");
 		m.addAttribute("contact", new Contact());
 		return "normal/add_contactform";
 	}
@@ -109,7 +109,7 @@ public class UserController {
 
 	@GetMapping("/all-contacts/{page}")
 	public String showAllContacts(Model m, Principal principal, @PathVariable("page") int page) {
-		m.addAttribute("title", "Your contacts - SmartContactManager");
+		m.addAttribute("title", "Your contacts - ContactCanvas");
 
 		Pageable pageable = PageRequest.of(page, 5);
 
@@ -133,9 +133,9 @@ public class UserController {
 		// verifying that the contact is associated with the logged in user
 		if (user.getId() == contact.getUser().getId()) {
 			m.addAttribute("contact", contact);
-			m.addAttribute("title", contact.getName() + "-SmartContact5Manager");
+			m.addAttribute("title", contact.getName() + "- ContactCanvas");
 		} else {
-			m.addAttribute("title", "NotFound - SmartContactManager");
+			m.addAttribute("title", "NotFound - ContactCanvas");
 		}
 
 		return "normal/specific-contact";
@@ -167,7 +167,7 @@ public class UserController {
 		Contact contact = contactRepo.findById(id).get();
 
 		if (user.getId() == contact.getUser().getId()) {
-			m.addAttribute("title", "Update Contact - SmartContactManager");
+			m.addAttribute("title", "Update Contact - ContactCanvas");
 			m.addAttribute("contact", contact);
 		}
 
@@ -204,13 +204,34 @@ public class UserController {
 	
 	@GetMapping("/your-profile")
 	public String showProfile(Model m) {
-		m.addAttribute("title", "Your Profile - SmartContactManager");
+		m.addAttribute("title", "Your Profile - ContactCanvas");
 		return "normal/your_profile";
+	}
+	
+	@PostMapping("/change-user-image")
+	public String changeUserImage(@RequestParam("img") MultipartFile file, Principal principal) {
+		User user = userRepo.getUserByUsername(principal.getName());
+
+		try {
+
+			if (file != null) {
+				Files.deleteIfExists(Paths.get(UPLOAD_DIR + File.separator + user.getImageUrl()));
+				user.setImageUrl(file.getOriginalFilename());
+				Files.copy(file.getInputStream(), Paths.get(UPLOAD_DIR + File.separator + file.getOriginalFilename()),
+						StandardCopyOption.REPLACE_EXISTING);
+			}
+
+			userRepo.save(user);
+		} catch (Exception e) {
+			System.out.println("ERROR" + e.getMessage());
+			e.printStackTrace();
+		}
+		return "redirect:/user/your-profile";
 	}
 	
 	@GetMapping("/settings")
 	public String openSettings(Model m) {
-		m.addAttribute("title", "Settings - SmartContactManager");
+		m.addAttribute("title", "Settings - ContactCanvas");
 		return "normal/settings";
 	}
 	

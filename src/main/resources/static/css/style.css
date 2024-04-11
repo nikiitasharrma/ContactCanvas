@@ -108,3 +108,9 @@ body {
 	background: #1f0a0a !important;
 	color: white !important; 
 }
+
+/* User dashboard image */
+.user-dash-img{
+	width: 100%;
+	height: 93vh;
+}

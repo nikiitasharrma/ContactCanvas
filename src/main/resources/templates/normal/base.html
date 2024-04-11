@@ -20,7 +20,7 @@
 <body>
 	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-		<a class="navbar-brand" href="#">SmartContactManager</a>
+		<a class="navbar-brand" href="#">ContactCanvas</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -30,8 +30,10 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav ml-auto text-uppercase">
-				<li class="nav-item"><a class="nav-link" th:text="${user.name}"></a>
-				</li>
+				<li class="nav-item"><img class="contact-profile"
+					th:src="@{'/img/' + ${user.imageUrl}}" alt="user photo" /></li>
+				<li class="nav-item"><a class="nav-link" th:text="${user.name}"
+					th:href="@{/user/your-profile}"></a></li>
 				<li class="nav-item active"><a class="nav-link" th:href="@{/}">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
@@ -42,24 +44,19 @@
 	</nav>
 	<!-- Sidebar -->
 	<div class="sidebar mt-3">
-		<span onclick="toggleSidebar()" class="crossBtn">&times;</span> 
-		<a id="home-link"
-			th:href="@{/user/index}" class="item"><i
-			class="fa-solid fa-house"></i> Home</a> 
-		<a id="contacts-link"
+		<span onclick="toggleSidebar()" class="crossBtn">&times;</span> <a
+			id="home-link" th:href="@{/user/index}" class="item"><i
+			class="fa-solid fa-house"></i> Home</a> <a id="contacts-link"
 			th:href="@{/user/all-contacts/0}" class="item"><i
-			class="fa-solid fa-address-book"></i> View Contacts</a> 
-		<a id="add-contact-link"
-			th:href="@{/user/addContact}" class="item"><i
-			class="fa-solid fa-pen-to-square"></i> Add Contact</a> 
-		<a id="profile-link"
-			th:href="@{/user/your-profile}" class="item"><i
-			class="fa-solid fa-user"></i> Your Profile</a> 
-		<a id="settings-link" th:href="@{/user/settings}" class="item"><i
-			class="fa-solid fa-gear"></i> Settings</a> 
-		<a id="logout-link" th:href="@{/logout}"
-			class="item"><i class="fa-solid fa-right-from-bracket"></i>
-			Logout</a>
+			class="fa-solid fa-address-book"></i> View Contacts</a> <a
+			id="add-contact-link" th:href="@{/user/addContact}" class="item"><i
+			class="fa-solid fa-pen-to-square"></i> Add Contact</a> <a
+			id="profile-link" th:href="@{/user/your-profile}" class="item"><i
+			class="fa-solid fa-user"></i> Your Profile</a> <a id="settings-link"
+			th:href="@{/user/settings}" class="item"><i
+			class="fa-solid fa-gear"></i> Settings</a> <a id="logout-link"
+			th:href="@{/logout}" class="item"><i
+			class="fa-solid fa-right-from-bracket"></i> Logout</a>
 		<div class="divider"></div>
 	</div>
 
@@ -95,7 +92,7 @@
 			})
 			.then((willDelete) => {
 			  if (willDelete) {
-				  window.location="/SmartContactManager/user/delete/" + cId;
+				  window.location="/ContactCanvas/user/delete/" + cId;
 			    swal("Poof! Your contact has been deleted!", {
 			      icon: "success",
 			    });
